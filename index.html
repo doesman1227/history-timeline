@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>宇宙と人類の年表</title>
-<meta name="description" content="ビッグバンから現代まで、宇宙・地球・各地域・各宗教の歴史を一つの年表で。カテゴリごとに表示を切り替えられます。">
+<meta name="description" content="ビッグバンから現代まで、宇宙・地球・各地域・各宗教、そして政治・経済・思想・科学・技術・芸術・医学・環境・心と意識などテーマ別の歴史を一つの年表で。カテゴリごとに表示を切り替えられます。">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&family=Noto+Serif+JP:wght@600;700&display=swap" rel="stylesheet">
@@ -17,6 +17,9 @@
   --c-oceania:#72c8f5; --c-world:#b4bac4;
   --c-judaism:#8fa0ff; --c-christianity:#f2d17a; --c-islam:#34c6a0; --c-hinduism:#ff9d4d;
   --c-buddhism:#d9a0ff; --c-confucian:#b9d86a; --c-shinto:#ff6a5c; --c-otherrel:#c7ae94;
+  --c-politics:#7fb2ff; --c-war:#ff7a7a; --c-economy:#f5c542; --c-society:#ff9ecf; --c-gender:#ff7fb8;
+  --c-thought:#b39dff; --c-science:#5ee0e0; --c-tech:#9ad06a; --c-media:#6ec6ff; --c-arts:#ffb36b;
+  --c-medicine:#7ff0b0; --c-environment:#6fcf6f; --c-daily:#e0c9a6; --c-mind:#c58cff; --c-historiography:#bfc3cc;
 }
 *{box-sizing:border-box}
 html{scroll-behavior:smooth}
@@ -30,11 +33,22 @@ h1{font-family:"Noto Serif JP",serif;font-size:clamp(28px,5vw,40px);margin:0 0 8
 .lead{color:var(--muted);margin:0}
 
 /* filter bar */
-.filters{position:sticky;top:0;z-index:10;background:color-mix(in srgb,var(--bg) 92%,transparent);backdrop-filter:blur(8px);border-bottom:1px solid var(--line);padding:12px 0}
+.filters{border-bottom:1px solid var(--line);padding:12px 0;scroll-margin-top:0}
 .chips{display:flex;flex-direction:column;gap:8px}
 .grp{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
-.grp-label{font-size:11px;letter-spacing:.12em;color:var(--muted);width:4.5em;flex:none}
-@media (max-width:600px){ .filters{position:static} .grp-label{width:100%} }
+.grp-label{font:inherit;font-size:12px;letter-spacing:.08em;color:var(--muted);width:5.5em;flex:none;text-align:left;padding:4px 0;border:0;background:none;cursor:pointer}
+.grp-label:hover{color:var(--accent)}
+.grp-label::after{content:" ⇄";font-size:10px;opacity:.6}
+@media (max-width:600px){ .grp-label{width:100%} }
+.tofilter{position:fixed;right:16px;bottom:16px;z-index:20;padding:8px 16px;border-radius:999px;border:1px solid var(--accent);background:var(--surface);color:var(--accent);box-shadow:0 4px 16px rgba(0,0,0,.5);opacity:0;pointer-events:none;transition:opacity .2s}
+.tofilter.show{opacity:1;pointer-events:auto}
+.lens{margin-top:20px;border:1px solid var(--line);border-radius:10px;background:var(--surface);padding:0 16px}
+.lens summary{cursor:pointer;padding:12px 0;font-size:14px;color:var(--accent)}
+.lens p{font-size:14px;color:var(--muted);margin:0 0 12px}
+.lens table{width:100%;border-collapse:collapse;font-size:13px;margin-bottom:16px}
+.lens th,.lens td{text-align:left;padding:6px 8px;border-top:1px solid var(--line);vertical-align:top}
+.lens th{color:var(--ink);white-space:nowrap}
+.lens td{color:var(--muted)}
 .chip{display:inline-flex;align-items:center;gap:6px;padding:5px 12px 5px 8px;border:1px solid var(--line);border-radius:999px;background:var(--surface);cursor:pointer;font-size:14px;user-select:none;transition:opacity .15s,border-color .15s}
 .chip input{appearance:none;width:16px;height:16px;border-radius:4px;border:2px solid var(--cat);margin:0;display:grid;place-content:center;cursor:pointer}
 .chip input:checked{background:var(--cat)}
@@ -82,11 +96,23 @@ footer .back{margin:8px 0 0}
   <header>
     <a class="back" href="../">← m-note トップ</a>
     <h1>宇宙と人類の<span>年表</span></h1>
-    <p class="lead">ビッグバンから現代まで、約138億年を一本の年表に。自然史・地域史・宗教史から、見たいカテゴリにチェックを入れてください。</p>
+    <p class="lead">ビッグバンから現代まで、約138億年を一本の年表に。自然史・地域史・宗教史・テーマ史から、見たいカテゴリにチェックを入れてください。</p>
+    <details class="lens">
+      <summary>この年表の見方 ― 歴史は「切り口」の掛け合わせ</summary>
+      <p>「日本史」は場所、「宗教史」はテーマ、「古代史」は時代による分け方です。これらは並列ではなく、「日本の古代の宗教史」のように掛け合わせられます。この年表では、時代を縦軸に、場所とテーマをチェックで重ねて見られるようにしています。</p>
+      <table>
+        <tr><th>時間</th><td>いつ？</td><td>宇宙の時代〜現代の8区分（縦の見出し）</td></tr>
+        <tr><th>空間</th><td>どこ？</td><td>地域史：世界全体・日本・中国…</td></tr>
+        <tr><th>テーマ</th><td>何について？</td><td>宗教史／テーマ史：政治・経済・思想・科学…</td></tr>
+        <tr><th>主体</th><td>誰が？</td><td>社会・人権、女性・ジェンダー など</td></tr>
+        <tr><th>スケール</th><td>どの大きさで？</td><td>自然史（宇宙・地球）から一人の思想家まで</td></tr>
+        <tr><th>方法</th><td>何を証拠に？</td><td>歴史学（史学史）で、過去の「書かれ方」そのものを見る</td></tr>
+      </table>
+    </details>
   </header>
 </div>
 
-<div class="filters">
+<div class="filters" id="filters">
   <div class="wrap">
     <div class="chips" id="chips"></div>
     <div class="row2">
@@ -96,6 +122,7 @@ footer .back{margin:8px 0 0}
         <button id="nature">自然史のみ</button>
         <button id="regions">地域史のみ</button>
         <button id="religions">宗教史のみ</button>
+        <button id="themes">テーマ史のみ</button>
       </div>
       <nav class="eranav" id="eranav"></nav>
       <span class="count" id="count"></span>
@@ -104,6 +131,7 @@ footer .back{margin:8px 0 0}
 </div>
 
 <main class="wrap" id="timeline"></main>
+<button class="tofilter" id="tofilter">▲ 絞り込み</button>
 
 <div class="wrap"><footer>
   <p>年代は代表的な説・概数です。「約◯年前」は現在からの年数、それ以外は西暦・紀元前で表記しています。</p>
@@ -133,6 +161,21 @@ const CATS = [
   {id:"confucian",    name:"儒教・道教",   group:"religion"},
   {id:"shinto",       name:"神道",         group:"religion"},
   {id:"otherrel",     name:"古代・その他の宗教", group:"religion"},
+  {id:"politics",       name:"政治・法",         group:"theme"},
+  {id:"war",            name:"戦争・軍事",       group:"theme"},
+  {id:"economy",        name:"経済・交易",       group:"theme"},
+  {id:"society",        name:"社会・人権",       group:"theme"},
+  {id:"gender",         name:"女性・ジェンダー", group:"theme"},
+  {id:"thought",        name:"思想・哲学",       group:"theme"},
+  {id:"science",        name:"科学",             group:"theme"},
+  {id:"tech",           name:"技術・発明",       group:"theme"},
+  {id:"media",          name:"情報・メディア・AI", group:"theme"},
+  {id:"arts",           name:"芸術・文学",       group:"theme"},
+  {id:"medicine",       name:"医学・感染症",     group:"theme"},
+  {id:"environment",    name:"環境・気候・災害", group:"theme"},
+  {id:"daily",          name:"生活・食・時間",   group:"theme"},
+  {id:"mind",           name:"心・脳・意識",     group:"theme"},
+  {id:"historiography", name:"歴史学（史学史）", group:"theme"},
 ];
 
 const ERAS = [
@@ -208,19 +251,19 @@ const EVENTS = [
   [-3.6e4,"human","約3万6000年前","ショーヴェ洞窟壁画","フランスに残る最古級の洞窟壁画。"],
 
   // 世界全体
-  [1347,"world","1347年","黒死病（ペスト）の大流行","ユーラシアで人口の数割が失われる。"],
+  [1347,"medicine","1347年","黒死病（ペスト）の大流行","ユーラシアで人口の数割が失われる。"],
   [1492,"world","1492年","旧大陸と新大陸の接触","コロンブス交換：作物・家畜・病原体が大陸間を移動。"],
   [1519,"world","1519〜22年","マゼラン艦隊の世界一周",""],
   [1914,"world","1914〜18年","第一次世界大戦",""],
-  [1918,"world","1918年","スペイン風邪の流行","世界で数千万人が死亡。"],
+  [1918,"medicine","1918年","スペイン風邪の流行","世界で数千万人が死亡。"],
   [1929,"world","1929年","世界恐慌",""],
   [1939,"world","1939〜45年","第二次世界大戦",""],
   [1945,"world","1945年","国際連合の設立",""],
   [1947,"world","1947〜91年","冷戦","米ソ二大陣営の対立。"],
-  [1969,"world","1969年","ARPANET（インターネットの原型）",""],
+  [1969,"media","1969年","ARPANET（インターネットの原型）",""],
   [1991,"world","1991年","ソビエト連邦の崩壊","冷戦の終結。"],
-  [2007,"world","2007年","スマートフォンの普及始まる",""],
-  [2020,"world","2020年","新型コロナウイルスのパンデミック",""],
+  [2007,"media","2007年","スマートフォンの普及始まる",""],
+  [2020,"medicine","2020年","新型コロナウイルスのパンデミック","mRNAワクチンが短期間で実用化される。"],
 
   // 日本
   [-3.8e4,"japan","約3万8000年前","日本列島に人類が到達","旧石器時代。"],
@@ -307,7 +350,7 @@ const EVENTS = [
   [476,"europe","476年","西ローマ帝国の滅亡",""],
   [800,"europe","800年","カール大帝の戴冠",""],
   [1096,"europe","1096年","第1回十字軍",""],
-  [1450,"europe","1450年頃","グーテンベルクの活版印刷",""],
+  [1450,"media","1450年頃","グーテンベルクの活版印刷",""],
   [1400,"europe","14〜16世紀","ルネサンス",""],
   [1760,"europe","1760年代〜","産業革命","イギリスで蒸気機関と工場制が広がる。"],
   [1789,"europe","1789年","フランス革命",""],
@@ -439,10 +482,235 @@ const EVENTS = [
   [-700,"otherrel","紀元前700年頃","ヘシオドス『神統記』","ギリシア神話の神々の系譜。"],
   [-480,"otherrel","紀元前6〜5世紀","ジャイナ教","マハーヴィーラが不殺生と苦行を説く。"],
   [1499,"otherrel","1499年頃","シク教","グル・ナーナクがパンジャーブで開く。"],
+
+  // 政治・法
+  [-450,"politics","紀元前450年頃","ローマの十二表法","ローマ最初の成文法。"],
+  [529,"politics","529〜534年","ユスティニアヌス法典","ローマ法の集大成。のちのヨーロッパ法の土台。"],
+  [1215,"politics","1215年","マグナ・カルタ","王の権力も法に縛られるという考えの出発点。"],
+  [1648,"politics","1648年","ウェストファリア条約","主権国家どうしが並び立つ近代国際秩序の始まり。"],
+  [1689,"politics","1689年","権利の章典","名誉革命を経て、イギリスで議会の優位が確立。"],
+  [1804,"politics","1804年","ナポレオン法典","法の下の平等・私有財産を定め、各国の民法の手本に。"],
+  [1815,"politics","1815年","ウィーン会議","ナポレオン戦争後のヨーロッパの国際秩序。"],
+  [1920,"politics","1920年","国際連盟","史上初の世界的な国際平和機構。"],
+  [1925,"politics","1925年","日本で普通選挙法","25歳以上の男性に選挙権。"],
+  [1955,"politics","1955年","アジア・アフリカ会議（バンドン会議）","新興独立国が平和共存を訴える。"],
+
+  // 戦争・軍事
+  [-1274,"war","紀元前1274年頃","カデシュの戦い","エジプトとヒッタイト。詳しい記録が残る最古級の会戦で、のちに講和条約も結ばれる。"],
+  [-490,"war","紀元前490年","マラトンの戦い","ペルシア戦争でアテネが勝利。"],
+  [-500,"war","紀元前5世紀頃","『孫子』","「戦わずして勝つ」を説く兵法書。"],
+  [-218,"war","紀元前218年","ハンニバルのアルプス越え","第二次ポエニ戦争。"],
+  [950,"war","10世紀頃","火薬兵器の登場","中国で火薬が軍事に使われ始める。"],
+  [1337,"war","1337〜1453年","百年戦争","イギリスとフランス。騎士の時代の終わり。"],
+  [1618,"war","1618〜48年","三十年戦争","宗教対立から始まったヨーロッパ全体の戦争。"],
+  [1815,"war","1815年","ワーテルローの戦い","ナポレオンの最終的な敗北。"],
+  [1832,"war","1832年","クラウゼヴィッツ『戦争論』","「戦争は他の手段をもってする政治の継続」。"],
+  [1945,"war","1945年","最初の核実験","核兵器の時代が始まる。"],
+  [1955,"war","1955〜75年","ベトナム戦争",""],
+  [1968,"war","1968年","核拡散防止条約（NPT）",""],
+  [2022,"war","2022年","ロシアのウクライナ侵攻",""],
+
+  // 経済・交易
+  [-630,"economy","紀元前7世紀","最古の硬貨","小アジアのリディア王国。"],
+  [-130,"economy","紀元前2世紀","シルクロード","張騫の西域派遣を機に、東西を結ぶ交易路が発達。"],
+  [1024,"economy","1024年","世界初の公式紙幣「交子」","北宋の四川で発行。"],
+  [1602,"economy","1602年","オランダ東インド会社","最初の本格的な株式会社。"],
+  [1694,"economy","1694年","イングランド銀行",""],
+  [1776,"economy","1776年","アダム・スミス『国富論』","分業と市場の「見えざる手」。経済学の誕生。"],
+  [1867,"economy","1867年","マルクス『資本論』第1巻","資本主義の仕組みと矛盾を分析。"],
+  [1944,"economy","1944年","ブレトン・ウッズ体制","ドルを基軸とする戦後の国際通貨体制。"],
+  [1971,"economy","1971年","ニクソン・ショック","金とドルの交換停止。変動相場制へ。"],
+  [1973,"economy","1973年","第一次石油危機",""],
+  [2008,"economy","2008年","リーマン・ショック","世界金融危機。"],
+  [2009,"economy","2009年","ビットコイン","中央銀行を持たない暗号資産の登場。"],
+
+  // 社会・人権
+  [1791,"society","1791〜1804年","ハイチ革命","奴隷の反乱から、世界初の黒人共和国が誕生。"],
+  [1804,"society","1804年頃","世界人口が10億人に",""],
+  [1807,"society","1807年","イギリスが奴隷貿易を廃止",""],
+  [1848,"society","1848年","1848年革命","ヨーロッパ各地で自由と民族を求める革命。"],
+  [1865,"society","1865年","アメリカで奴隷制廃止","憲法修正第13条。"],
+  [1886,"society","1886年","メーデーの起源","シカゴで8時間労働を求めるストライキ。"],
+  [1948,"society","1948年","世界人権宣言",""],
+  [1963,"society","1963年","ワシントン大行進","キング牧師「私には夢がある」。"],
+  [1969,"society","1969年","ストーンウォールの反乱","性的少数者の権利運動の転機。"],
+  [2015,"society","2015年","SDGs（持続可能な開発目標）",""],
+  [2022,"society","2022年","世界人口が80億人に",""],
+
+  // 女性・ジェンダー
+  [1405,"gender","1405年","クリスティーヌ・ド・ピザン『女の都』","女性の側から女性蔑視に反論した最初期の著作。"],
+  [1792,"gender","1792年","ウルストンクラフト『女性の権利の擁護』",""],
+  [1848,"gender","1848年","セネカフォールズ会議","アメリカで女性の権利を求める最初の大会。"],
+  [1893,"gender","1893年","ニュージーランドで女性参政権","国政レベルで世界初。"],
+  [1911,"gender","1911年","平塚らいてう『青鞜』創刊","「元始、女性は実に太陽であった」。"],
+  [1945,"gender","1945年","日本で女性参政権",""],
+  [1949,"gender","1949年","ボーヴォワール『第二の性』","「人は女に生まれるのではない、女になるのだ」。"],
+  [1979,"gender","1979年","女子差別撤廃条約",""],
+  [1985,"gender","1985年","男女雇用機会均等法（日本）",""],
+  [2001,"gender","2001年","オランダで同性婚が法制化","国として世界初。"],
+
+  // 思想・哲学
+  [-585,"thought","紀元前6世紀","タレスと哲学の始まり","万物の根源を神話ではなく理性で問う。"],
+  [-399,"thought","紀元前399年","ソクラテスの死","「無知の知」。"],
+  [-387,"thought","紀元前387年頃","プラトンのアカデメイア","イデア論。"],
+  [-335,"thought","紀元前335年","アリストテレスのリュケイオン","論理学・自然学・倫理学を体系化。"],
+  [-300,"thought","紀元前300年頃","ストア派とエピクロス派","心の平静を求めるヘレニズムの哲学。"],
+  [150,"thought","2世紀頃","龍樹（ナーガールジュナ）『中論』","「空」の哲学。大乗仏教の思想的な基盤。"],
+  [400,"thought","400年頃","アウグスティヌス『告白』","内面と時間についての思索。"],
+  [1265,"thought","1265〜74年","トマス・アクィナス『神学大全』","信仰と理性の統合。"],
+  [1637,"thought","1637年","デカルト『方法序説』","「我思う、ゆえに我あり」。"],
+  [1651,"thought","1651年","ホッブズ『リヴァイアサン』","社会契約による国家論。"],
+  [1739,"thought","1739年","ヒューム『人間本性論』","自己とは「知覚の束」にすぎないと論じる。"],
+  [1762,"thought","1762年","ルソー『社会契約論』",""],
+  [1781,"thought","1781年","カント『純粋理性批判』","私たちは世界を認識の枠組みを通してしか知りえない。"],
+  [1807,"thought","1807年","ヘーゲル『精神現象学』",""],
+  [1883,"thought","1883〜85年","ニーチェ『ツァラトゥストラはこう語った』",""],
+  [1911,"thought","1911年","西田幾多郎『善の研究』","「純粋経験」。日本独自の哲学の出発点。"],
+  [1927,"thought","1927年","ハイデガー『存在と時間』",""],
+
+  // 科学
+  [-300,"science","紀元前300年頃","ユークリッド『原論』","公理から定理を導く幾何学。"],
+  [-250,"science","紀元前3世紀","アルキメデス","浮力の原理、てこの原理。"],
+  [628,"science","628年","ブラフマグプタのゼロの計算規則","インドで「ゼロ」が数として扱われる。"],
+  [820,"science","820年頃","フワーリズミーの代数学","「アルゴリズム」の語源となった学者。"],
+  [1021,"science","1011〜21年頃","イブン・アル＝ハイサム『光学の書』","実験と観察にもとづく方法の先駆け。"],
+  [1735,"science","1735年","リンネの生物分類",""],
+  [1789,"science","1789年","ラヴォアジエ『化学原論』","質量保存の法則。近代化学の誕生。"],
+  [1859,"science","1859年","ダーウィン『種の起源』","自然選択による進化論。"],
+  [1865,"science","1865年","メンデルの遺伝の法則",""],
+  [1869,"science","1869年","メンデレーエフの周期表",""],
+  [1905,"science","1905年","アインシュタインの「奇跡の年」","特殊相対性理論・光量子仮説。"],
+  [1912,"science","1912年","ヴェゲナーの大陸移動説","のちのプレートテクトニクスへ。"],
+  [1925,"science","1925〜26年","量子力学の誕生","ハイゼンベルクとシュレーディンガー。"],
+  [1953,"science","1953年","DNAの二重らせん構造","ワトソンとクリック、フランクリンのX線写真。"],
+  [2003,"science","2003年","ヒトゲノムの解読完了",""],
+  [2012,"science","2012年","ヒッグス粒子の発見",""],
+
+  // 技術・発明
+  [-3500,"tech","紀元前3500年頃","車輪","メソポタミアで。"],
+  [-3300,"tech","紀元前3300年頃〜","青銅器時代","銅と錫の合金で道具と武器をつくる。"],
+  [-1200,"tech","紀元前1200年頃〜","鉄器時代","鉄の加工技術が各地へ広がる。"],
+  [105,"tech","105年","蔡倫の製紙法","後漢で紙が改良される。"],
+  [1088,"tech","11世紀","羅針盤","北宋の沈括が磁針について記録。"],
+  [1769,"tech","1769年","ワットの蒸気機関","産業革命の原動力。"],
+  [1804,"tech","1804年","蒸気機関車","トレヴィシックが走らせる。"],
+  [1879,"tech","1879年","白熱電球の実用化","エジソン。夜の暮らしが変わる。"],
+  [1886,"tech","1886年","ガソリン自動車","ベンツが特許を取得。"],
+  [1903,"tech","1903年","ライト兄弟の動力飛行",""],
+  [1908,"tech","1908年","T型フォード","大量生産で自動車が大衆のものに。"],
+  [1947,"tech","1947年","トランジスタの発明","電子機器の小型化の出発点。"],
+  [1954,"tech","1954年","原子力発電の始まり","ソ連のオブニンスクで。"],
+
+  // 情報・メディア・AI
+  [-1050,"media","紀元前11世紀頃","フェニキア文字","多くのアルファベットの祖。"],
+  [868,"media","868年","現存最古の印刷本『金剛般若経』","中国の木版印刷。"],
+  [1605,"media","1605年","最初の新聞","ストラスブールで週刊新聞が発行される。"],
+  [1844,"media","1844年","電信の実用化","モールスが遠隔地へ文字を瞬時に送る。"],
+  [1876,"media","1876年","電話","ベルが特許を取得。"],
+  [1895,"media","1895年","映画の誕生","リュミエール兄弟のシネマトグラフ。"],
+  [1920,"media","1920年","ラジオ放送の始まり",""],
+  [1936,"media","1936年","テレビ放送の始まり","BBCが定時放送を開始。"],
+  [1946,"media","1946年","ENIAC","初期の電子式汎用コンピュータ。"],
+  [1950,"media","1950年","チューリング「計算する機械と知能」","「機械は考えられるか」を問う。"],
+  [1956,"media","1956年","ダートマス会議","「人工知能（AI）」という分野の誕生。"],
+  [1991,"media","1991年","World Wide Web",""],
+  [2004,"media","2004年頃","SNSの広がり","Facebookなどが登場。"],
+  [2022,"media","2022年","生成AIの普及","ChatGPTの公開で対話型AIが一般に広まる。"],
+
+  // 芸術・文学
+  [-2100,"arts","紀元前2100年頃〜","『ギルガメシュ叙事詩』","現存最古級の文学。"],
+  [-750,"arts","紀元前8世紀","ホメロス『イリアス』『オデュッセイア』",""],
+  [-429,"arts","紀元前429年頃","ソフォクレス『オイディプス王』","ギリシア悲劇。"],
+  [759,"arts","759年以降","『万葉集』","日本最古の歌集。"],
+  [1307,"arts","1307〜21年","ダンテ『神曲』",""],
+  [1503,"arts","1503年頃〜","レオナルド『モナ・リザ』","ルネサンス美術の頂点。"],
+  [1600,"arts","1600年頃","シェイクスピア『ハムレット』",""],
+  [1605,"arts","1605年","セルバンテス『ドン・キホーテ』","近代小説の始まりとされる。"],
+  [1689,"arts","1689年","芭蕉『おくのほそ道』の旅",""],
+  [1824,"arts","1824年","ベートーヴェン「第九」",""],
+  [1831,"arts","1831年頃","北斎『富嶽三十六景』","のちに印象派にも影響を与える。"],
+  [1874,"arts","1874年","第1回印象派展",""],
+  [1907,"arts","1907年","ピカソ『アヴィニョンの娘たち』","キュビスムの出発点。"],
+  [1963,"arts","1963年","テレビアニメ『鉄腕アトム』","日本のアニメ文化の始まり。"],
+
+  // 医学・感染症
+  [-400,"medicine","紀元前5〜4世紀","ヒポクラテス","病気を神の罰でなく自然の原因から考える。"],
+  [165,"medicine","165〜180年","アントニヌスの疫病","ローマ帝国を襲った大流行。"],
+  [541,"medicine","541年","ユスティニアヌスのペスト","記録に残る最初のペストの世界的流行。"],
+  [1025,"medicine","1025年","イブン・シーナー『医学典範』","数百年にわたり東西の医学の教科書に。"],
+  [1543,"medicine","1543年","ヴェサリウス『人体構造論』","解剖にもとづく近代解剖学。"],
+  [1628,"medicine","1628年","ハーヴェイの血液循環説",""],
+  [1796,"medicine","1796年","ジェンナーの種痘","ワクチンの始まり。"],
+  [1804,"medicine","1804年","華岡青洲の全身麻酔手術","記録に残る世界初の全身麻酔下での手術。"],
+  [1854,"medicine","1854年","ジョン・スノウとコレラ","地図で感染源を突き止める。疫学の始まり。"],
+  [1882,"medicine","1882年","コッホが結核菌を発見",""],
+  [1928,"medicine","1928年","フレミングがペニシリンを発見","抗生物質の時代へ。"],
+  [1980,"medicine","1980年","天然痘の根絶宣言","人類が根絶した最初の感染症。"],
+  [1983,"medicine","1983年","HIVの発見",""],
+
+  // 環境・気候・災害
+  [-1600,"environment","紀元前1600年頃","テラ島（サントリーニ）の大噴火","ミノア文明の衰退に影響したとされる。"],
+  [79,"environment","79年","ヴェスヴィオ火山の噴火","ポンペイが埋没。"],
+  [536,"environment","536年","「火山の冬」","大噴火により北半球が寒冷化し、飢饉が起こる。"],
+  [1300,"environment","14〜19世紀","小氷期","寒冷な時代が続き、各地で飢饉が起こる。"],
+  [1755,"environment","1755年","リスボン地震","神の摂理をめぐる思想論争も引き起こす。"],
+  [1815,"environment","1815年","タンボラ火山の噴火","翌年は「夏のない年」に。"],
+  [1845,"environment","1845〜49年","アイルランド大飢饉","ジャガイモの病害。大量の移民を生む。"],
+  [1923,"environment","1923年","関東大震災",""],
+  [1962,"environment","1962年","カーソン『沈黙の春』","農薬による環境汚染を告発。"],
+  [1972,"environment","1972年","国連人間環境会議・『成長の限界』",""],
+  [1986,"environment","1986年","チェルノブイリ原発事故",""],
+  [1988,"environment","1988年","IPCC（気候変動に関する政府間パネル）",""],
+  [1997,"environment","1997年","京都議定書",""],
+  [2015,"environment","2015年","パリ協定",""],
+
+  // 生活・食・時間
+  [-13000,"daily","約1万5000年前","犬の家畜化","人間と最も古くから暮らす動物。"],
+  [-6000,"daily","紀元前6000年頃","ワインづくり","コーカサス地方（現ジョージア）で。"],
+  [-3400,"daily","紀元前4千年紀","ビール","メソポタミアで飲まれていた。"],
+  [-1500,"daily","紀元前1500年頃","日時計と水時計","エジプトで時間を測る道具が使われる。"],
+  [-45,"daily","紀元前45年","ユリウス暦","1年を365日と4分の1とする太陽暦。"],
+  [1300,"daily","13世紀末〜","機械式時計","ヨーロッパの修道院や塔に。時間が「均等に刻まれるもの」に。"],
+  [1582,"daily","1582年","グレゴリオ暦","現在の世界共通の暦。"],
+  [1652,"daily","1652年","ロンドン最初のコーヒーハウス","議論と情報交換の場になる。"],
+  [1873,"daily","1873年","日本が太陽暦を採用",""],
+  [1884,"daily","1884年","国際子午線会議","グリニッジを基準とする世界標準時へ。"],
+  [1958,"daily","1958年","インスタントラーメン","日本で発明される。"],
+
+  // 心・脳・意識
+  [-1600,"mind","紀元前17世紀頃","エドウィン・スミス・パピルス","「脳」についての現存最古の記述。"],
+  [-350,"mind","紀元前4世紀","アリストテレス『魂について』","心のはたらきを初めて体系的に論じる。"],
+  [1641,"mind","1641年","デカルトの心身二元論","心と身体は別の実体だとする。"],
+  [1664,"mind","1664年","ウィリス『脳の解剖学』","神経学（neurology）という言葉を生む。"],
+  [1861,"mind","1861年","ブローカが言語野を発見","心のはたらきが脳の特定の部位と結びつく。"],
+  [1879,"mind","1879年","ヴントの心理学実験室","科学としての心理学の誕生。"],
+  [1888,"mind","1888年","カハールのニューロン説","脳は独立した神経細胞のネットワーク。"],
+  [1890,"mind","1890年","ジェームズ『心理学原理』","「意識の流れ」。"],
+  [1900,"mind","1900年","フロイト『夢判断』","無意識の発見。"],
+  [1913,"mind","1913年","行動主義","ワトソンが観察できる行動だけを研究対象に。"],
+  [1956,"mind","1956年","認知革命","心を情報処理として捉える認知科学へ。"],
+  [1990,"mind","1990年","fMRIの原理（BOLD信号）","小川誠二が発見。生きた脳の活動が見えるように。"],
+  [1995,"mind","1995年","意識の「ハード・プロブレム」","チャーマーズ：なぜ主観的な体験があるのか。"],
+  [2004,"mind","2004年","統合情報理論","トノーニが意識を情報の統合として定式化。"],
+  [2021,"mind","2021年","ホーキンス『千の脳』","大脳新皮質の無数のモデルが世界を捉えるとする理論。"],
+
+  // 歴史学（史学史）
+  [-430,"historiography","紀元前430年頃","ヘロドトス『歴史』","「歴史の父」。"],
+  [-400,"historiography","紀元前5世紀末","トゥキディデス『戦史』","史料批判にもとづく叙述の先駆け。"],
+  [-91,"historiography","紀元前91年頃","司馬遷『史記』","紀伝体。東アジアの歴史叙述の手本に。"],
+  [1377,"historiography","1377年","イブン・ハルドゥーン『歴史序説』","王朝の興亡に社会的な法則を見出す。"],
+  [1824,"historiography","1824年","ランケと近代歴史学","「それが本来いかにあったか」を史料から示す。"],
+  [1929,"historiography","1929年","アナール学派","政治や英雄でなく、社会・経済・心性の歴史へ。"],
+  [1949,"historiography","1949年","ブローデル『地中海』","地理・経済・出来事の三層の時間（長期持続）。"],
+  [1976,"historiography","1976年","ギンズブルグ『チーズとうじ虫』","一人の粉挽き職人から時代を描くミクロヒストリー。"],
+  [1978,"historiography","1978年","サイード『オリエンタリズム』","「見る側」の歴史叙述を問い直す。"],
+  [1982,"historiography","1982年","サバルタン研究","声を奪われた人々の側から植民地史を書く。"],
+  [1989,"historiography","1989年","ビッグヒストリー","デヴィッド・クリスチャンが宇宙から現代までを一続きに教え始める。"],
+  [2011,"historiography","2011年","ハラリ『サピエンス全史』","人類史を「虚構を信じる力」から読み解く。"],
 ];
 
 // ---- 状態の保存（使えない環境でも動くように） ----
-const KEY = "history-timeline-cats-v2";
+const KEY = "history-timeline-cats-v3";
 function loadState(){
   try{ const v = JSON.parse(localStorage.getItem(KEY)); if(Array.isArray(v)) return new Set(v); }catch(e){}
   return new Set(CATS.map(c=>c.id));
@@ -455,11 +723,17 @@ const eraOf = y => { let e = ERAS[0]; for(const er of ERAS){ if(y >= er.from) e 
 
 // ---- フィルタのチップ ----
 const chipsEl = document.getElementById("chips");
-const GROUPS = {nature:"自然史", region:"地域史", religion:"宗教史"};
+const GROUPS = {nature:"自然史", region:"地域史", religion:"宗教史", theme:"テーマ史"};
 const grpEl = {};
 for(const [g,label] of Object.entries(GROUPS)){
   const d = document.createElement("div"); d.className = "grp";
-  d.innerHTML = `<span class="grp-label">${label}</span>`;
+  d.innerHTML = `<button class="grp-label" title="このグループをまとめて切り替え">${label}</button>`;
+  d.querySelector("button").onclick = ()=>{
+    const ids = CATS.filter(c=>c.group===g).map(c=>c.id);
+    const allOn = ids.every(id=>active.has(id));
+    ids.forEach(id=> allOn ? active.delete(id) : active.add(id));
+    apply();
+  };
   chipsEl.appendChild(d); grpEl[g] = d;
 }
 for(const c of CATS){
@@ -518,6 +792,10 @@ document.getElementById("none").onclick    = ()=> setCats([]);
 document.getElementById("nature").onclick  = ()=> setCats(CATS.filter(c=>c.group==="nature").map(c=>c.id));
 document.getElementById("regions").onclick = ()=> setCats(CATS.filter(c=>c.group==="region").map(c=>c.id));
 document.getElementById("religions").onclick = ()=> setCats(CATS.filter(c=>c.group==="religion").map(c=>c.id));
+document.getElementById("themes").onclick = ()=> setCats(CATS.filter(c=>c.group==="theme").map(c=>c.id));
+const filtersEl = document.getElementById("filters"), toBtn = document.getElementById("tofilter");
+toBtn.onclick = ()=> filtersEl.scrollIntoView({behavior:"smooth"});
+addEventListener("scroll", ()=> toBtn.classList.toggle("show", filtersEl.getBoundingClientRect().bottom < 0), {passive:true});
 apply();
 </script>
 </body>
