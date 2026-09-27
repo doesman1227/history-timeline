@@ -1,0 +1,411 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>宇宙と人類の年表</title>
+<meta name="description" content="ビッグバンから現代まで、宇宙・地球・各地域の歴史を一つの年表で。カテゴリごとに表示を切り替えられます。">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&family=Noto+Serif+JP:wght@600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  color-scheme:dark;
+  --bg:#08090b; --surface:#131519; --ink:#ececee; --muted:#8d929c; --line:#23262d; --accent:#c9a86a;
+  --c-universe:#a193ff; --c-earth:#5fd08f; --c-human:#e6a55c; --c-mideast:#e6bd5c; --c-africa:#f08e62;
+  --c-europe:#72acf2; --c-americas:#52cccc; --c-india:#f07fae; --c-china:#f47676; --c-japan:#fa6e8f;
+  --c-oceania:#72c8f5; --c-world:#b4bac4;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:radial-gradient(1200px 600px at 50% -200px,#1a1d2a 0%,transparent 70%),var(--bg);background-attachment:fixed;color:var(--ink);font-family:"Noto Sans JP",system-ui,sans-serif;line-height:1.7;-webkit-font-smoothing:antialiased}
+.wrap{max-width:920px;margin:0 auto;padding:0 16px}
+header{padding:24px 0 24px}
+.back{display:inline-block;color:var(--muted);text-decoration:none;font-size:13px;margin-bottom:32px}
+.back:hover{color:var(--accent)}
+h1 span{color:var(--accent)}
+h1{font-family:"Noto Serif JP",serif;font-size:clamp(28px,5vw,40px);margin:0 0 8px;letter-spacing:.02em}
+.lead{color:var(--muted);margin:0}
+
+/* filter bar */
+.filters{position:sticky;top:0;z-index:10;background:color-mix(in srgb,var(--bg) 92%,transparent);backdrop-filter:blur(8px);border-bottom:1px solid var(--line);padding:12px 0}
+.chips{display:flex;flex-wrap:wrap;gap:8px}
+.chip{display:inline-flex;align-items:center;gap:6px;padding:5px 12px 5px 8px;border:1px solid var(--line);border-radius:999px;background:var(--surface);cursor:pointer;font-size:14px;user-select:none;transition:opacity .15s,border-color .15s}
+.chip input{appearance:none;width:16px;height:16px;border-radius:4px;border:2px solid var(--cat);margin:0;display:grid;place-content:center;cursor:pointer}
+.chip input:checked{background:var(--cat)}
+.chip input:checked::after{content:"";width:4px;height:8px;border:solid #08090b;border-width:0 2px 2px 0;transform:rotate(45deg) translate(-1px,-1px)}
+.chip:has(input:checked){border-color:var(--cat)}
+.chip:not(:has(input:checked)){opacity:.55}
+.chip .n{color:var(--muted);font-size:12px}
+.row2{display:flex;flex-wrap:wrap;gap:8px 16px;align-items:center;justify-content:space-between;margin-top:10px;font-size:13px}
+.btns{display:flex;gap:6px;flex-wrap:wrap}
+button{font:inherit;font-size:13px;padding:4px 12px;border:1px solid var(--line);border-radius:6px;background:var(--surface);color:var(--ink);cursor:pointer}
+button:hover{border-color:var(--accent)}
+.eranav{display:flex;gap:4px;flex-wrap:wrap}
+.eranav a{color:var(--muted);text-decoration:none;padding:2px 8px;border-radius:4px}
+.eranav a:hover{color:var(--accent);background:var(--surface)}
+.count{color:var(--muted)}
+
+/* timeline */
+main{padding:24px 0 80px}
+.era{margin-top:40px;scroll-margin-top:140px}
+.era h2{font-family:"Noto Serif JP",serif;font-size:22px;margin:0;display:flex;align-items:baseline;gap:12px;flex-wrap:wrap}
+.era h2 small{font-family:"Noto Sans JP",sans-serif;font-size:13px;color:var(--muted);font-weight:400}
+.era .desc{color:var(--muted);font-size:14px;margin:4px 0 16px}
+.era.empty{display:none}
+ol{list-style:none;margin:0;padding:0 0 0 20px;border-left:2px solid var(--line)}
+li.ev{position:relative;margin:0 0 12px;padding:12px 16px;background:var(--surface);border:1px solid var(--line);border-radius:10px}
+li.ev::before{content:"";position:absolute;left:-28px;top:18px;width:12px;height:12px;border-radius:50%;background:var(--cat);border:3px solid var(--bg)}
+li.ev[hidden]{display:none}
+.meta{display:flex;gap:10px;align-items:center;flex-wrap:wrap;font-size:13px}
+.date{font-weight:700;color:var(--ink);font-variant-numeric:tabular-nums}
+.tag{color:var(--cat);border:1px solid color-mix(in srgb,var(--cat) 40%,transparent);background:color-mix(in srgb,var(--cat) 10%,transparent);padding:0 8px;border-radius:999px;font-size:12px}
+.ev h3{font-size:16px;margin:4px 0 2px;font-weight:700}
+.ev p{margin:0;color:var(--muted);font-size:14px}
+footer{color:var(--muted);font-size:12px;padding:24px 0 48px;border-top:1px solid var(--line)}
+footer p{margin:0 0 6px}
+footer .back{margin:8px 0 0}
+@media (max-width:600px){
+  .eranav{display:none}
+  ol{padding-left:16px}
+  li.ev::before{left:-24px}
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <a class="back" href="../">← m-note トップ</a>
+    <h1>宇宙と人類の<span>年表</span></h1>
+    <p class="lead">ビッグバンから現代まで、約138億年を一本の年表に。見たいカテゴリにチェックを入れてください。</p>
+  </header>
+</div>
+
+<div class="filters">
+  <div class="wrap">
+    <div class="chips" id="chips"></div>
+    <div class="row2">
+      <div class="btns">
+        <button id="all">すべて表示</button>
+        <button id="none">すべて非表示</button>
+        <button id="nature">自然史のみ</button>
+        <button id="regions">地域史のみ</button>
+      </div>
+      <nav class="eranav" id="eranav"></nav>
+      <span class="count" id="count"></span>
+    </div>
+  </div>
+</div>
+
+<main class="wrap" id="timeline"></main>
+
+<div class="wrap"><footer>
+  <p>年代は代表的な説・概数です。「約◯年前」は現在からの年数、それ以外は西暦・紀元前で表記しています。</p>
+  <p>専門家ではない個人が、興味をもって調べたことを整理した個人的なまとめです。内容の正確性を保証するものではありません。</p>
+  <p><a class="back" href="../">← m-note トップ</a></p>
+</footer></div>
+
+<script>
+const CATS = [
+  {id:"universe", name:"宇宙",         group:"nature"},
+  {id:"earth",    name:"地球・生命",   group:"nature"},
+  {id:"human",    name:"人類の進化",   group:"nature"},
+  {id:"world",    name:"世界全体",     group:"region"},
+  {id:"japan",    name:"日本",         group:"region"},
+  {id:"china",    name:"中国・東アジア", group:"region"},
+  {id:"india",    name:"南アジア",     group:"region"},
+  {id:"mideast",  name:"中東・西アジア", group:"region"},
+  {id:"europe",   name:"ヨーロッパ",   group:"region"},
+  {id:"africa",   name:"アフリカ",     group:"region"},
+  {id:"americas", name:"南北アメリカ", group:"region"},
+  {id:"oceania",  name:"オセアニア",   group:"region"},
+];
+
+const ERAS = [
+  {id:"cosmos",   name:"宇宙の時代",   range:"138億年前〜46億年前", from:-Infinity, desc:"宇宙が生まれ、星と銀河がつくられていく。"},
+  {id:"planet",   name:"地球と生命",   range:"46億年前〜700万年前", from:-4.6e9,    desc:"地球が誕生し、生命が海から陸へと広がる。"},
+  {id:"hominin",  name:"人類の登場",   range:"700万年前〜紀元前3500年", from:-7e6,  desc:"人類がアフリカで生まれ、世界へ広がり、農耕を始める。"},
+  {id:"ancient",  name:"古代",         range:"紀元前3500年〜500年", from:-3500,     desc:"文字と都市が生まれ、各地に文明と帝国が興る。"},
+  {id:"medieval", name:"中世",         range:"500年〜1500年",       from:500,       desc:"宗教が社会を形づくり、交易と征服が大陸をつなぐ。"},
+  {id:"earlymod", name:"近世",         range:"1500年〜1800年",      from:1500,      desc:"大航海で世界が一つにつながり、科学が始まる。"},
+  {id:"modern",   name:"近代",         range:"1800年〜1945年",      from:1800,      desc:"産業化・国民国家・帝国主義、そして二つの世界大戦。"},
+  {id:"contemp",  name:"現代",         range:"1945年〜",            from:1945,      desc:"冷戦、宇宙開発、グローバル化とデジタル革命。"},
+];
+
+// [年(西暦, 紀元前は負), カテゴリ, 表示用の年, タイトル, 説明]
+const EVENTS = [
+  // 宇宙
+  [-13.8e9,"universe","約138億年前","ビッグバン","宇宙が超高温・超高密度の状態から膨張を始める。"],
+  [-13.79962e9,"universe","約138億年前（誕生38万年後）","宇宙の晴れ上がり","原子が生まれ光がまっすぐ進めるようになる。宇宙背景放射として今も観測できる。"],
+  [-13.6e9,"universe","約136億年前","最初の恒星の誕生","暗黒時代が終わり、最初の星々が輝き始める。"],
+  [-13.2e9,"universe","約132億年前","天の川銀河の形成始まる","私たちの銀河の最も古い星々が生まれる。"],
+  [-5e9,"universe","約50億年前","宇宙の加速膨張が始まる","ダークエネルギーの効果が物質の重力を上回る。"],
+  [-4.6e9,"universe","約46億年前","太陽系の誕生","分子雲が収縮して太陽が生まれ、周囲の円盤から惑星がつくられる。"],
+  [-240,"universe","紀元前240年頃","エラトステネスが地球の大きさを測る","影の角度の違いから地球の全周をほぼ正確に算出。"],
+  [1543,"universe","1543年","コペルニクスの地動説","『天球回転論』で太陽中心の宇宙像を提示。"],
+  [1609,"universe","1609年","ガリレオが望遠鏡で天体観測","月の凹凸や木星の衛星を発見。"],
+  [1687,"universe","1687年","ニュートンの万有引力","『プリンキピア』で天体の運動を一つの法則で説明。"],
+  [1915,"universe","1915年","一般相対性理論","アインシュタインが重力を時空の歪みとして記述。"],
+  [1929,"universe","1929年","宇宙膨張の発見","ハッブルが遠い銀河ほど速く遠ざかることを示す。"],
+  [1957,"universe","1957年","スプートニク1号","ソ連が世界初の人工衛星を打ち上げ、宇宙時代が始まる。"],
+  [1961,"universe","1961年","ガガーリンが人類初の宇宙飛行",""],
+  [1965,"universe","1965年","宇宙背景放射の発見","ビッグバン理論を裏づける決定的な証拠。"],
+  [1969,"universe","1969年","アポロ11号 月面着陸","人類が初めて地球以外の天体に立つ。"],
+  [1990,"universe","1990年","ハッブル宇宙望遠鏡",""],
+  [1995,"universe","1995年","太陽系外惑星の発見","太陽に似た恒星を回る惑星（ペガスス座51番星b）が見つかる。"],
+  [1998,"universe","1998年","宇宙の加速膨張の発見","遠方の超新星観測から判明。"],
+  [2015,"universe","2015年","重力波の初検出","LIGOがブラックホール合体による重力波をとらえる。"],
+  [2019,"universe","2019年","ブラックホールの初撮影","イベント・ホライズン・テレスコープがM87の影を撮影。"],
+  [2021,"universe","2021年","ジェイムズ・ウェッブ宇宙望遠鏡",""],
+
+  // 地球・生命
+  [-4.6e9,"earth","約46億年前","地球の誕生","微惑星の衝突・合体で原始地球がつくられる。"],
+  [-4.5e9,"earth","約45億年前","月の誕生","巨大衝突説：火星サイズの天体が原始地球に衝突。"],
+  [-4.0e9,"earth","約40億年前","最古の岩石","カナダのアカスタ片麻岩。海も存在していた。"],
+  [-3.8e9,"earth","約40〜38億年前","生命の誕生","海の中で最初の単細胞生物が生まれる。"],
+  [-2.7e9,"earth","約27億年前","光合成生物（シアノバクテリア）","酸素を出す光合成が始まる。"],
+  [-2.4e9,"earth","約24億年前","大酸化イベント","大気中の酸素が急増し、地球環境が一変する。"],
+  [-2.0e9,"earth","約20億年前","真核生物の出現","核をもつ複雑な細胞が生まれる。"],
+  [-7.2e8,"earth","約7億2000万年前","全球凍結（スノーボールアース）","地球全体が氷に覆われた時代。"],
+  [-5.39e8,"earth","約5億3900万年前","カンブリア爆発","多様な動物が短期間に一斉に出現。"],
+  [-4.7e8,"earth","約4億7000万年前","植物の上陸",""],
+  [-3.75e8,"earth","約3億7500万年前","脊椎動物の上陸","魚類から四肢をもつ動物へ。"],
+  [-3.35e8,"earth","約3億3500万年前","超大陸パンゲア","ほぼすべての大陸が一つにまとまる。"],
+  [-2.52e8,"earth","約2億5200万年前","史上最大の大量絶滅（P-T境界）","海洋生物の9割以上が絶滅。"],
+  [-2.3e8,"earth","約2億3000万年前","恐竜の出現",""],
+  [-2.25e8,"earth","約2億2500万年前","哺乳類の出現",""],
+  [-1.5e8,"earth","約1億5000万年前","始祖鳥","恐竜から鳥類への進化を示す化石。"],
+  [-6.6e7,"earth","約6600万年前","恐竜の絶滅（K-Pg境界）","巨大隕石の衝突。哺乳類の時代へ。"],
+  [-2.58e6,"earth","約258万年前","第四紀・氷河時代の始まり","氷期と間氷期がくり返される。"],
+  [-9700,"earth","約1万1700年前","最終氷期の終わり","温暖な完新世が始まり、農耕の条件が整う。"],
+
+  // 人類の進化
+  [-7e6,"human","約700万年前","最古の人類","サヘラントロプス・チャデンシス。チンパンジーとの系統が分かれる。"],
+  [-4.4e6,"human","約440万年前","アルディピテクス","直立二足歩行の初期段階。"],
+  [-3.3e6,"human","約330万年前","最古の石器","ケニアのロメクウィ遺跡。"],
+  [-3.2e6,"human","約320万年前","「ルーシー」","アウストラロピテクス・アファレンシスの化石。"],
+  [-2.4e6,"human","約240万年前","ホモ・ハビリス","ヒト属（ホモ属）の登場。"],
+  [-1.8e6,"human","約180万年前","ホモ・エレクトスがアフリカを出る","ユーラシア各地へ広がる。"],
+  [-1e6,"human","約100万年前","火の使用","南アフリカの洞窟に痕跡。"],
+  [-4e5,"human","約40万年前","ネアンデルタール人の系統",""],
+  [-3e5,"human","約30万年前","ホモ・サピエンスの登場","モロッコのジェベル・イルード遺跡。"],
+  [-6e4,"human","約6万年前","サピエンスの出アフリカ","世界中に広がる現生人類の祖先。"],
+  [-4e4,"human","約4万年前","ネアンデルタール人の絶滅",""],
+  [-3.6e4,"human","約3万6000年前","ショーヴェ洞窟壁画","フランスに残る最古級の洞窟壁画。"],
+
+  // 世界全体
+  [1347,"world","1347年","黒死病（ペスト）の大流行","ユーラシアで人口の数割が失われる。"],
+  [1492,"world","1492年","旧大陸と新大陸の接触","コロンブス交換：作物・家畜・病原体が大陸間を移動。"],
+  [1519,"world","1519〜22年","マゼラン艦隊の世界一周",""],
+  [1914,"world","1914〜18年","第一次世界大戦",""],
+  [1918,"world","1918年","スペイン風邪の流行","世界で数千万人が死亡。"],
+  [1929,"world","1929年","世界恐慌",""],
+  [1939,"world","1939〜45年","第二次世界大戦",""],
+  [1945,"world","1945年","国際連合の設立",""],
+  [1947,"world","1947〜91年","冷戦","米ソ二大陣営の対立。"],
+  [1969,"world","1969年","ARPANET（インターネットの原型）",""],
+  [1991,"world","1991年","ソビエト連邦の崩壊","冷戦の終結。"],
+  [2007,"world","2007年","スマートフォンの普及始まる",""],
+  [2020,"world","2020年","新型コロナウイルスのパンデミック",""],
+
+  // 日本
+  [-3.8e4,"japan","約3万8000年前","日本列島に人類が到達","旧石器時代。"],
+  [-1.6e4,"japan","約1万6000年前","縄文土器","世界最古級の土器。縄文時代の始まり。"],
+  [-1000,"japan","紀元前10世紀頃","水田稲作の伝来","弥生時代の始まり。"],
+  [57,"japan","57年","奴国王が後漢から金印を受ける",""],
+  [239,"japan","239年","卑弥呼が魏に使いを送る",""],
+  [260,"japan","3世紀後半","古墳時代","前方後円墳がつくられ、ヤマト王権が成長。"],
+  [538,"japan","538年","仏教の伝来",""],
+  [604,"japan","604年","十七条憲法",""],
+  [645,"japan","645年","大化の改新",""],
+  [710,"japan","710年","平城京へ遷都","奈良時代。"],
+  [794,"japan","794年","平安京へ遷都","平安時代。"],
+  [1008,"japan","1008年頃","『源氏物語』",""],
+  [1185,"japan","1185年","鎌倉幕府の成立","武士の政権が始まる。"],
+  [1274,"japan","1274・1281年","元寇","モンゴル帝国（元）の襲来。"],
+  [1336,"japan","1336年","室町幕府","足利尊氏が開く。"],
+  [1467,"japan","1467年","応仁の乱","戦国時代へ。"],
+  [1543,"japan","1543年","鉄砲の伝来",""],
+  [1600,"japan","1600年","関ヶ原の戦い",""],
+  [1603,"japan","1603年","江戸幕府","約260年続く泰平の時代。"],
+  [1639,"japan","1639年","「鎖国」体制の完成",""],
+  [1853,"japan","1853年","ペリー来航",""],
+  [1868,"japan","1868年","明治維新",""],
+  [1889,"japan","1889年","大日本帝国憲法",""],
+  [1904,"japan","1904年","日露戦争",""],
+  [1945,"japan","1945年","終戦","広島・長崎への原爆投下、ポツダム宣言受諾。"],
+  [1947,"japan","1947年","日本国憲法の施行",""],
+  [1964,"japan","1964年","東京オリンピック・新幹線開業","高度経済成長の象徴。"],
+  [2011,"japan","2011年","東日本大震災",""],
+
+  // 中国・東アジア
+  [-7000,"china","紀元前7000年頃","長江流域で稲作",""],
+  [-1600,"china","紀元前1600年頃","殷（商）王朝","甲骨文字（漢字の祖）が使われる。"],
+  [-1046,"china","紀元前1046年","周王朝",""],
+  [-551,"china","紀元前551年","孔子の誕生","儒教の祖。"],
+  [-221,"china","紀元前221年","秦の始皇帝が中国を統一",""],
+  [-202,"china","紀元前202年","漢王朝","シルクロードで西方とつながる。"],
+  [618,"china","618年","唐王朝","国際色豊かな大帝国。"],
+  [960,"china","960年","宋王朝","火薬・羅針盤・印刷術が発達。"],
+  [1206,"china","1206年","モンゴル帝国","チンギス・ハンが建国、史上最大級の陸上帝国へ。"],
+  [1368,"china","1368年","明王朝",""],
+  [1392,"china","1392年","朝鮮王朝（李氏朝鮮）",""],
+  [1446,"china","1446年","ハングルの公布",""],
+  [1405,"china","1405〜33年","鄭和の大航海","明の艦隊がアフリカ東岸まで到達。"],
+  [1644,"china","1644年","清王朝",""],
+  [1840,"china","1840年","アヘン戦争",""],
+  [1911,"china","1911年","辛亥革命","王朝体制の終わり。"],
+  [1949,"china","1949年","中華人民共和国の成立",""],
+  [1950,"china","1950〜53年","朝鮮戦争",""],
+  [1978,"china","1978年","改革開放",""],
+
+  // 南アジア
+  [-2600,"india","紀元前2600年頃","インダス文明","モヘンジョ・ダロなどの計画都市。"],
+  [-1500,"india","紀元前1500年頃","ヴェーダ時代","インド・アーリア人の到来と聖典ヴェーダ。"],
+  [-500,"india","紀元前5世紀頃","ブッダ（釈迦）","仏教が生まれる。"],
+  [-268,"india","紀元前268年頃","アショーカ王","マウリヤ朝の最盛期、仏教を保護。"],
+  [320,"india","320年","グプタ朝","ゼロの概念など数学・文化が発展。"],
+  [1526,"india","1526年","ムガル帝国",""],
+  [1632,"india","1632年","タージ・マハル着工",""],
+  [1858,"india","1858年","イギリスの直接統治",""],
+  [1947,"india","1947年","インド・パキスタン独立",""],
+
+  // 中東・西アジア
+  [-9500,"mideast","紀元前9500年頃","ギョベクリ・テペ","農耕以前に築かれた巨石の祭祀遺跡。"],
+  [-9000,"mideast","紀元前9000年頃","農耕・牧畜の始まり","「肥沃な三日月地帯」で麦の栽培が始まる。"],
+  [-3500,"mideast","紀元前3500年頃","シュメールの都市文明","ウルクなどメソポタミアの都市国家。"],
+  [-3200,"mideast","紀元前3200年頃","楔形文字","最古級の文字。"],
+  [-2334,"mideast","紀元前2334年頃","アッカド帝国","サルゴン王による最初の帝国。"],
+  [-1754,"mideast","紀元前1754年頃","ハンムラビ法典",""],
+  [-550,"mideast","紀元前550年","アケメネス朝ペルシア","オリエント全域を統一。"],
+  [-330,"mideast","紀元前330年","アレクサンドロスがペルシアを征服","ヘレニズム時代へ。"],
+  [610,"mideast","610年頃","イスラム教の成立","ムハンマドが啓示を受ける。"],
+  [750,"mideast","750年","アッバース朝","バグダードがイスラム文化・学問の中心に。"],
+  [1453,"mideast","1453年","オスマン帝国がコンスタンティノープルを征服","ビザンツ帝国の滅亡。"],
+  [1922,"mideast","1922年","オスマン帝国の滅亡",""],
+  [1948,"mideast","1948年","イスラエル建国",""],
+  [1979,"mideast","1979年","イラン革命",""],
+  [2011,"mideast","2011年","アラブの春",""],
+
+  // ヨーロッパ
+  [-2000,"europe","紀元前2000年頃","ミノア文明","クレタ島のクノッソス宮殿。"],
+  [-776,"europe","紀元前776年","第1回古代オリンピック",""],
+  [-509,"europe","紀元前509年","ローマ共和政",""],
+  [-508,"europe","紀元前508年","アテネの民主政",""],
+  [-27,"europe","紀元前27年","ローマ帝国（帝政）の始まり","アウグストゥスが初代皇帝に。"],
+  [476,"europe","476年","西ローマ帝国の滅亡",""],
+  [800,"europe","800年","カール大帝の戴冠",""],
+  [1096,"europe","1096年","第1回十字軍",""],
+  [1450,"europe","1450年頃","グーテンベルクの活版印刷",""],
+  [1400,"europe","14〜16世紀","ルネサンス",""],
+  [1517,"europe","1517年","宗教改革","ルターが95か条の論題を発表。"],
+  [1760,"europe","1760年代〜","産業革命","イギリスで蒸気機関と工場制が広がる。"],
+  [1789,"europe","1789年","フランス革命",""],
+  [1989,"europe","1989年","ベルリンの壁崩壊",""],
+  [1993,"europe","1993年","EU（欧州連合）発足",""],
+
+  // アフリカ
+  [-3100,"africa","紀元前3100年頃","エジプト統一","ファラオによる王朝の始まり。"],
+  [-2560,"africa","紀元前2560年頃","ギザの大ピラミッド",""],
+  [-814,"africa","紀元前814年頃","カルタゴの建国",""],
+  [-30,"africa","紀元前30年","プトレマイオス朝エジプトの滅亡","クレオパトラの死、ローマの属州に。"],
+  [330,"africa","4世紀","アクスム王国がキリスト教を受容",""],
+  [1300,"africa","13〜15世紀","グレート・ジンバブエ","南部アフリカの石造都市。"],
+  [1324,"africa","1324年","マンサ・ムーサのメッカ巡礼","マリ帝国の富が世界に知られる。"],
+  [1500,"africa","16〜19世紀","大西洋奴隷貿易",""],
+  [1884,"africa","1884年","ベルリン会議","列強によるアフリカ分割。"],
+  [1960,"africa","1960年","「アフリカの年」","17か国が独立。"],
+  [1994,"africa","1994年","マンデラが南アフリカ大統領に","アパルトヘイトの終結。"],
+
+  // 南北アメリカ
+  [-1.6e4,"americas","約1万6000年前","アメリカ大陸へ人類が到達","ベーリング陸橋を経由したとされる。"],
+  [-1200,"americas","紀元前1200年頃","オルメカ文明","メソアメリカ最古級の文明。"],
+  [250,"americas","250〜900年","マヤ文明の古典期",""],
+  [1325,"americas","1325年","テノチティトランの建設","アステカの首都。"],
+  [1438,"americas","1438年","インカ帝国の拡大",""],
+  [1492,"americas","1492年","コロンブスの到達",""],
+  [1521,"americas","1521年","アステカ王国の滅亡",""],
+  [1776,"americas","1776年","アメリカ独立宣言",""],
+  [1861,"americas","1861〜65年","南北戦争",""],
+  [1962,"americas","1962年","キューバ危機",""],
+  [2001,"americas","2001年","アメリカ同時多発テロ",""],
+
+  // オセアニア
+  [-5e4,"oceania","約5万年前以前","オーストラリアに人類が到達",""],
+  [1250,"oceania","13世紀頃","ポリネシア人がニュージーランドに到達","太平洋に広がった航海民の最後の到達地。"],
+  [1788,"oceania","1788年","イギリスのオーストラリア入植",""],
+];
+
+// ---- 状態の保存（使えない環境でも動くように） ----
+const KEY = "history-timeline-cats";
+function loadState(){
+  try{ const v = JSON.parse(localStorage.getItem(KEY)); if(Array.isArray(v)) return new Set(v); }catch(e){}
+  return new Set(CATS.map(c=>c.id));
+}
+function saveState(){ try{ localStorage.setItem(KEY, JSON.stringify([...active])); }catch(e){} }
+let active = loadState();
+
+const catById = Object.fromEntries(CATS.map(c=>[c.id,c]));
+const eraOf = y => { let e = ERAS[0]; for(const er of ERAS){ if(y >= er.from) e = er; } return e; };
+
+// ---- フィルタのチップ ----
+const chipsEl = document.getElementById("chips");
+for(const c of CATS){
+  const n = EVENTS.filter(e=>e[1]===c.id).length;
+  const label = document.createElement("label");
+  label.className = "chip";
+  label.style.setProperty("--cat", `var(--c-${c.id})`);
+  label.innerHTML = `<input type="checkbox" value="${c.id}"><span>${c.name}</span><span class="n">${n}</span>`;
+  const cb = label.querySelector("input");
+  cb.checked = active.has(c.id);
+  cb.addEventListener("change", ()=>{ cb.checked ? active.add(c.id) : active.delete(c.id); apply(); });
+  chipsEl.appendChild(label);
+}
+
+// ---- 年表の描画 ----
+const tl = document.getElementById("timeline");
+const nav = document.getElementById("eranav");
+const sorted = EVENTS.map((e,i)=>({y:e[0],cat:e[1],date:e[2],title:e[3],desc:e[4],i}))
+  .sort((a,b)=> a.y-b.y || a.i-b.i);
+const eraLists = {};
+for(const er of ERAS){
+  const sec = document.createElement("section");
+  sec.className = "era"; sec.id = er.id;
+  sec.innerHTML = `<h2>${er.name}<small>${er.range}</small></h2><p class="desc">${er.desc}</p><ol></ol>`;
+  tl.appendChild(sec);
+  eraLists[er.id] = sec;
+  const a = document.createElement("a"); a.href = "#"+er.id; a.textContent = er.name; nav.appendChild(a);
+}
+for(const ev of sorted){
+  const li = document.createElement("li");
+  li.className = "ev"; li.dataset.cat = ev.cat;
+  li.style.setProperty("--cat", `var(--c-${ev.cat})`);
+  li.innerHTML = `<div class="meta"><span class="date">${ev.date}</span><span class="tag">${catById[ev.cat].name}</span></div>
+    <h3>${ev.title}</h3>${ev.desc?`<p>${ev.desc}</p>`:""}`;
+  eraLists[eraOf(ev.y).id].querySelector("ol").appendChild(li);
+}
+
+function apply(){
+  let shown = 0;
+  document.querySelectorAll("li.ev").forEach(li=>{
+    const on = active.has(li.dataset.cat); li.hidden = !on; if(on) shown++;
+  });
+  for(const er of ERAS){
+    const sec = eraLists[er.id];
+    const any = sec.querySelector("li.ev:not([hidden])");
+    sec.classList.toggle("empty", !any);
+    nav.querySelector(`a[href="#${er.id}"]`).style.display = any ? "" : "none";
+  }
+  document.querySelectorAll("#chips input").forEach(cb=> cb.checked = active.has(cb.value));
+  document.getElementById("count").textContent = `${shown} / ${EVENTS.length} 件を表示`;
+  saveState();
+}
+const setCats = ids => { active = new Set(ids); apply(); };
+document.getElementById("all").onclick     = ()=> setCats(CATS.map(c=>c.id));
+document.getElementById("none").onclick    = ()=> setCats([]);
+document.getElementById("nature").onclick  = ()=> setCats(CATS.filter(c=>c.group==="nature").map(c=>c.id));
+document.getElementById("regions").onclick = ()=> setCats(CATS.filter(c=>c.group==="region").map(c=>c.id));
+apply();
+</script>
+</body>
+</html>
