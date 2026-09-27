@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>宇宙と人類の年表</title>
-<meta name="description" content="ビッグバンから現代まで、宇宙・地球・各地域の歴史を一つの年表で。カテゴリごとに表示を切り替えられます。">
+<meta name="description" content="ビッグバンから現代まで、宇宙・地球・各地域・各宗教の歴史を一つの年表で。カテゴリごとに表示を切り替えられます。">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&family=Noto+Serif+JP:wght@600;700&display=swap" rel="stylesheet">
@@ -15,6 +15,8 @@
   --c-universe:#a193ff; --c-earth:#5fd08f; --c-human:#e6a55c; --c-mideast:#e6bd5c; --c-africa:#f08e62;
   --c-europe:#72acf2; --c-americas:#52cccc; --c-india:#f07fae; --c-china:#f47676; --c-japan:#fa6e8f;
   --c-oceania:#72c8f5; --c-world:#b4bac4;
+  --c-judaism:#8fa0ff; --c-christianity:#f2d17a; --c-islam:#34c6a0; --c-hinduism:#ff9d4d;
+  --c-buddhism:#d9a0ff; --c-confucian:#b9d86a; --c-shinto:#ff6a5c; --c-otherrel:#c7ae94;
 }
 *{box-sizing:border-box}
 html{scroll-behavior:smooth}
@@ -29,7 +31,10 @@ h1{font-family:"Noto Serif JP",serif;font-size:clamp(28px,5vw,40px);margin:0 0 8
 
 /* filter bar */
 .filters{position:sticky;top:0;z-index:10;background:color-mix(in srgb,var(--bg) 92%,transparent);backdrop-filter:blur(8px);border-bottom:1px solid var(--line);padding:12px 0}
-.chips{display:flex;flex-wrap:wrap;gap:8px}
+.chips{display:flex;flex-direction:column;gap:8px}
+.grp{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+.grp-label{font-size:11px;letter-spacing:.12em;color:var(--muted);width:4.5em;flex:none}
+@media (max-width:600px){ .filters{position:static} .grp-label{width:100%} }
 .chip{display:inline-flex;align-items:center;gap:6px;padding:5px 12px 5px 8px;border:1px solid var(--line);border-radius:999px;background:var(--surface);cursor:pointer;font-size:14px;user-select:none;transition:opacity .15s,border-color .15s}
 .chip input{appearance:none;width:16px;height:16px;border-radius:4px;border:2px solid var(--cat);margin:0;display:grid;place-content:center;cursor:pointer}
 .chip input:checked{background:var(--cat)}
@@ -77,7 +82,7 @@ footer .back{margin:8px 0 0}
   <header>
     <a class="back" href="../">← m-note トップ</a>
     <h1>宇宙と人類の<span>年表</span></h1>
-    <p class="lead">ビッグバンから現代まで、約138億年を一本の年表に。見たいカテゴリにチェックを入れてください。</p>
+    <p class="lead">ビッグバンから現代まで、約138億年を一本の年表に。自然史・地域史・宗教史から、見たいカテゴリにチェックを入れてください。</p>
   </header>
 </div>
 
@@ -90,6 +95,7 @@ footer .back{margin:8px 0 0}
         <button id="none">すべて非表示</button>
         <button id="nature">自然史のみ</button>
         <button id="regions">地域史のみ</button>
+        <button id="religions">宗教史のみ</button>
       </div>
       <nav class="eranav" id="eranav"></nav>
       <span class="count" id="count"></span>
@@ -119,6 +125,14 @@ const CATS = [
   {id:"africa",   name:"アフリカ",     group:"region"},
   {id:"americas", name:"南北アメリカ", group:"region"},
   {id:"oceania",  name:"オセアニア",   group:"region"},
+  {id:"judaism",      name:"ユダヤ教",     group:"religion"},
+  {id:"christianity", name:"キリスト教",   group:"religion"},
+  {id:"islam",        name:"イスラム教",   group:"religion"},
+  {id:"hinduism",     name:"ヒンドゥー教", group:"religion"},
+  {id:"buddhism",     name:"仏教",         group:"religion"},
+  {id:"confucian",    name:"儒教・道教",   group:"religion"},
+  {id:"shinto",       name:"神道",         group:"religion"},
+  {id:"otherrel",     name:"古代・その他の宗教", group:"religion"},
 ];
 
 const ERAS = [
@@ -242,8 +256,7 @@ const EVENTS = [
   [-7000,"china","紀元前7000年頃","長江流域で稲作",""],
   [-1600,"china","紀元前1600年頃","殷（商）王朝","甲骨文字（漢字の祖）が使われる。"],
   [-1046,"china","紀元前1046年","周王朝",""],
-  [-551,"china","紀元前551年","孔子の誕生","儒教の祖。"],
-  [-221,"china","紀元前221年","秦の始皇帝が中国を統一",""],
+    [-221,"china","紀元前221年","秦の始皇帝が中国を統一",""],
   [-202,"china","紀元前202年","漢王朝","シルクロードで西方とつながる。"],
   [618,"china","618年","唐王朝","国際色豊かな大帝国。"],
   [960,"china","960年","宋王朝","火薬・羅針盤・印刷術が発達。"],
@@ -261,8 +274,7 @@ const EVENTS = [
 
   // 南アジア
   [-2600,"india","紀元前2600年頃","インダス文明","モヘンジョ・ダロなどの計画都市。"],
-  [-1500,"india","紀元前1500年頃","ヴェーダ時代","インド・アーリア人の到来と聖典ヴェーダ。"],
-  [-500,"india","紀元前5世紀頃","ブッダ（釈迦）","仏教が生まれる。"],
+  [-1500,"india","紀元前1500年頃","インド・アーリア人の到来","ガンジス川流域へ広がり、ヴァルナ（身分）制が形づくられる。"],
   [-268,"india","紀元前268年頃","アショーカ王","マウリヤ朝の最盛期、仏教を保護。"],
   [320,"india","320年","グプタ朝","ゼロの概念など数学・文化が発展。"],
   [1526,"india","1526年","ムガル帝国",""],
@@ -279,7 +291,6 @@ const EVENTS = [
   [-1754,"mideast","紀元前1754年頃","ハンムラビ法典",""],
   [-550,"mideast","紀元前550年","アケメネス朝ペルシア","オリエント全域を統一。"],
   [-330,"mideast","紀元前330年","アレクサンドロスがペルシアを征服","ヘレニズム時代へ。"],
-  [610,"mideast","610年頃","イスラム教の成立","ムハンマドが啓示を受ける。"],
   [750,"mideast","750年","アッバース朝","バグダードがイスラム文化・学問の中心に。"],
   [1453,"mideast","1453年","オスマン帝国がコンスタンティノープルを征服","ビザンツ帝国の滅亡。"],
   [1922,"mideast","1922年","オスマン帝国の滅亡",""],
@@ -298,7 +309,6 @@ const EVENTS = [
   [1096,"europe","1096年","第1回十字軍",""],
   [1450,"europe","1450年頃","グーテンベルクの活版印刷",""],
   [1400,"europe","14〜16世紀","ルネサンス",""],
-  [1517,"europe","1517年","宗教改革","ルターが95か条の論題を発表。"],
   [1760,"europe","1760年代〜","産業革命","イギリスで蒸気機関と工場制が広がる。"],
   [1789,"europe","1789年","フランス革命",""],
   [1989,"europe","1989年","ベルリンの壁崩壊",""],
@@ -334,10 +344,105 @@ const EVENTS = [
   [-5e4,"oceania","約5万年前以前","オーストラリアに人類が到達",""],
   [1250,"oceania","13世紀頃","ポリネシア人がニュージーランドに到達","太平洋に広がった航海民の最後の到達地。"],
   [1788,"oceania","1788年","イギリスのオーストラリア入植",""],
+
+  // ユダヤ教
+  [-1800,"judaism","紀元前2千年紀（伝承）","アブラハム","唯一神との契約。ユダヤ教・キリスト教・イスラム教共通の祖とされる。"],
+  [-1250,"judaism","紀元前13世紀頃（伝承）","出エジプトとモーセの十戒",""],
+  [-1000,"judaism","紀元前1000年頃","ダビデ王とエルサレム","子のソロモン王がエルサレム神殿（第一神殿）を建てる。"],
+  [-586,"judaism","紀元前586年","バビロン捕囚","神殿が破壊され、民がバビロンへ。ヘブライ語聖書の編纂が進む。"],
+  [-515,"judaism","紀元前515年","第二神殿の完成",""],
+  [70,"judaism","70年","ローマによる第二神殿の破壊","ディアスポラ（離散）の時代へ。"],
+  [200,"judaism","200年頃","ミシュナの編纂","口伝律法が書き記される。"],
+  [500,"judaism","500年頃","バビロニア・タルムード","ラビ・ユダヤ教の基盤となる注解の集大成。"],
+  [1492,"judaism","1492年","スペインからのユダヤ人追放",""],
+  [1897,"judaism","1897年","第1回シオニスト会議",""],
+  [1941,"judaism","1941〜45年","ホロコースト","ナチス・ドイツにより約600万人のユダヤ人が殺害される。"],
+
+  // キリスト教
+  [-4,"christianity","紀元前4年頃","イエスの誕生",""],
+  [30,"christianity","30年頃","イエスの十字架刑","弟子たちが復活を宣べ伝え、キリスト教が始まる。"],
+  [50,"christianity","50年頃","パウロの伝道","ユダヤ人以外にも広がり、世界宗教への道を開く。"],
+  [313,"christianity","313年","ミラノ勅令","ローマ帝国がキリスト教を公認。"],
+  [325,"christianity","325年","ニカイア公会議","三位一体論の基礎となる信条を定める。"],
+  [380,"christianity","380年","ローマ帝国の国教に",""],
+  [1054,"christianity","1054年","東西教会の分裂","カトリックと正教会に分かれる。"],
+  [1517,"christianity","1517年","宗教改革","ルターが95か条の論題を発表。プロテスタントの誕生。"],
+  [1534,"christianity","1534年","イングランド国教会・イエズス会","英国がローマから離脱。同年イエズス会が結成され、世界宣教へ。"],
+  [1545,"christianity","1545〜63年","トリエント公会議","カトリックの対抗宗教改革。"],
+  [1549,"christianity","1549年","ザビエルの来日","日本にキリスト教が伝わる。"],
+  [1620,"christianity","1620年","ピルグリム・ファーザーズ","信仰の自由を求めて北米へ渡る。"],
+  [1962,"christianity","1962〜65年","第2バチカン公会議","カトリックの近代化、他宗教との対話。"],
+
+  // イスラム教
+  [610,"islam","610年頃","ムハンマドが啓示を受ける","イスラム教の始まり。"],
+  [622,"islam","622年","ヒジュラ（聖遷）","メッカからメディナへ移住。イスラム暦の元年。"],
+  [632,"islam","632年","ムハンマドの死と正統カリフ",""],
+  [650,"islam","650年頃","クルアーンの正典化","第3代カリフ・ウスマーンのもとで。"],
+  [680,"islam","680年","カルバラーの戦い","フサインの殉教。スンナ派とシーア派の分岐が決定的に。"],
+  [711,"islam","711年","イベリア半島へ広がる",""],
+  [1258,"islam","1258年","モンゴルによるバグダード陥落","アッバース朝の滅亡。"],
+  [1273,"islam","13世紀","ルーミーとスーフィズム","神との合一を求める神秘主義が広まる。"],
+  [1501,"islam","1501年","サファヴィー朝がシーア派を国教化","現在のイランにつながる。"],
+  [1744,"islam","1744年頃","ワッハーブ運動","アラビア半島の復古主義。サウード家と結びつく。"],
+
+  // ヒンドゥー教
+  [-1400,"hinduism","紀元前1500〜1200年頃","『リグ・ヴェーダ』","最古の聖典。神々への讃歌。"],
+  [-700,"hinduism","紀元前8〜6世紀頃","ウパニシャッド","梵我一如（ブラフマンとアートマン）の哲学。"],
+  [-200,"hinduism","紀元前2世紀頃〜","『マハーバーラタ』と『バガヴァッド・ギーター』","二大叙事詩が成立していく。"],
+  [600,"hinduism","6世紀頃〜","バクティ（信愛）運動","南インドから、神への献身的な愛を説く運動が広がる。"],
+  [800,"hinduism","8世紀","シャンカラの不二一元論",""],
+  [1113,"hinduism","12世紀前半","アンコール・ワット","ヴィシュヌ神に捧げられたクメール王朝の寺院。"],
+  [1893,"hinduism","1893年","ヴィヴェーカーナンダ、シカゴ万国宗教会議で講演","ヒンドゥー思想が西洋に紹介される。"],
+
+  // 仏教
+  [-500,"buddhism","紀元前5世紀頃","ブッダ（釈迦）","悟りを開き、四諦・八正道を説く。生没年は諸説。"],
+  [-250,"buddhism","紀元前3世紀","アショーカ王の伝道","スリランカなどへ仏教が広がる（上座部仏教）。"],
+  [-50,"buddhism","紀元前後","大乗仏教の興起","菩薩の道を説く新しい流れ。"],
+  [50,"buddhism","1世紀頃","中国への伝来",""],
+  [372,"buddhism","372年","朝鮮半島（高句麗）への伝来",""],
+  [629,"buddhism","629〜645年","玄奘のインド求法の旅",""],
+  [640,"buddhism","7世紀","チベットへの伝来",""],
+  [806,"buddhism","805・806年","最澄と空海","天台宗・真言宗が開かれる。"],
+  [1175,"buddhism","1175年","法然の浄土宗","念仏による救いを説く鎌倉新仏教の始まり。"],
+  [1191,"buddhism","1191年","栄西が臨済禅を伝える",""],
+  [1203,"buddhism","1203年頃","インドで仏教が衰退","ヴィクラマシラー寺院が破壊される。"],
+  [1227,"buddhism","1227年","道元が曹洞禅を伝える",""],
+  [1253,"buddhism","1253年","日蓮が法華経の信仰を説く",""],
+  [1959,"buddhism","1959年","ダライ・ラマ14世の亡命","チベット仏教が世界に知られるきっかけに。"],
+
+  // 儒教・道教
+  [-551,"confucian","紀元前551年","孔子の誕生","仁と礼を説く。儒教の祖。"],
+  [-400,"confucian","紀元前4世紀頃","『老子（道徳経）』","無為自然を説く。道家思想の源。"],
+  [-372,"confucian","紀元前372年頃","孟子の誕生","性善説。"],
+  [-136,"confucian","紀元前136年","儒教が漢の官学に","五経博士が置かれる。"],
+  [142,"confucian","142年","五斗米道","張陵が開いた初期の道教教団。"],
+  [1170,"confucian","12世紀","朱子学","朱熹が大成。のちに東アジアの正統思想となる。"],
+  [1508,"confucian","16世紀初め","陽明学","王陽明が知行合一を説く。"],
+
+  // 神道
+  [690,"shinto","690年","伊勢神宮の最初の式年遷宮","以後ほぼ20年ごとに続く。"],
+  [712,"shinto","712年","『古事記』",""],
+  [720,"shinto","720年","『日本書紀』",""],
+  [740,"shinto","8世紀〜","神仏習合が進む","神は仏の仮の姿とする本地垂迹説へ。"],
+  [927,"shinto","927年","延喜式神名帳","全国の官社を記録。"],
+  [1300,"shinto","13〜14世紀","伊勢神道",""],
+  [1484,"shinto","15世紀後半","吉田神道","吉田兼倶が唱える。"],
+  [1798,"shinto","1798年","本居宣長『古事記伝』","国学が神道思想に影響を与える。"],
+  [1868,"shinto","1868年","神仏分離令","廃仏毀釈の動きが起こる。"],
+  [1945,"shinto","1945年","神道指令","国家神道の解体。"],
+
+  // 古代・その他の宗教
+  [-1e5,"otherrel","約10万年前","意図的な埋葬の痕跡","中東の洞窟遺跡。死後の世界への意識の始まりとも。"],
+  [-2400,"otherrel","紀元前2400年頃","ピラミッド・テキスト","古代エジプト最古の宗教文書。"],
+  [-1350,"otherrel","紀元前14世紀","アクエンアテンの宗教改革","エジプトで太陽神アテンのみを崇拝。"],
+  [-1000,"otherrel","紀元前1千年紀頃（諸説）","ゾロアスター教","善と悪の二元論。ペルシアの国教となる。"],
+  [-700,"otherrel","紀元前700年頃","ヘシオドス『神統記』","ギリシア神話の神々の系譜。"],
+  [-480,"otherrel","紀元前6〜5世紀","ジャイナ教","マハーヴィーラが不殺生と苦行を説く。"],
+  [1499,"otherrel","1499年頃","シク教","グル・ナーナクがパンジャーブで開く。"],
 ];
 
 // ---- 状態の保存（使えない環境でも動くように） ----
-const KEY = "history-timeline-cats";
+const KEY = "history-timeline-cats-v2";
 function loadState(){
   try{ const v = JSON.parse(localStorage.getItem(KEY)); if(Array.isArray(v)) return new Set(v); }catch(e){}
   return new Set(CATS.map(c=>c.id));
@@ -350,6 +455,13 @@ const eraOf = y => { let e = ERAS[0]; for(const er of ERAS){ if(y >= er.from) e 
 
 // ---- フィルタのチップ ----
 const chipsEl = document.getElementById("chips");
+const GROUPS = {nature:"自然史", region:"地域史", religion:"宗教史"};
+const grpEl = {};
+for(const [g,label] of Object.entries(GROUPS)){
+  const d = document.createElement("div"); d.className = "grp";
+  d.innerHTML = `<span class="grp-label">${label}</span>`;
+  chipsEl.appendChild(d); grpEl[g] = d;
+}
 for(const c of CATS){
   const n = EVENTS.filter(e=>e[1]===c.id).length;
   const label = document.createElement("label");
@@ -359,7 +471,7 @@ for(const c of CATS){
   const cb = label.querySelector("input");
   cb.checked = active.has(c.id);
   cb.addEventListener("change", ()=>{ cb.checked ? active.add(c.id) : active.delete(c.id); apply(); });
-  chipsEl.appendChild(label);
+  grpEl[c.group].appendChild(label);
 }
 
 // ---- 年表の描画 ----
@@ -405,6 +517,7 @@ document.getElementById("all").onclick     = ()=> setCats(CATS.map(c=>c.id));
 document.getElementById("none").onclick    = ()=> setCats([]);
 document.getElementById("nature").onclick  = ()=> setCats(CATS.filter(c=>c.group==="nature").map(c=>c.id));
 document.getElementById("regions").onclick = ()=> setCats(CATS.filter(c=>c.group==="region").map(c=>c.id));
+document.getElementById("religions").onclick = ()=> setCats(CATS.filter(c=>c.group==="religion").map(c=>c.id));
 apply();
 </script>
 </body>
