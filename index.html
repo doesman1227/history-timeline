@@ -105,7 +105,6 @@ footer .back{margin:8px 0 0}
     <h1>歴史</h1>
     <p class="mn-tagline">138億年の出来事と、人類が書き残した言葉を、一本の年表に。</p>
     <p class="lead">ビッグバンから現代まで、約138億年を一本の年表に。自然史・地域史・宗教史・テーマ史、そして古典（人類が書き残してきた古い文献）から、見たいカテゴリにチェックを入れてください。</p>
-    <p class="lead"><a href="../ancient-texts/">古典の一覧 →</a>　地域・ジャンルで絞り込んで、1冊ずつ読めます。</p>
     <details class="lens">
       <summary>この年表の見方 ― 歴史は「切り口」の掛け合わせ</summary>
       <p>「日本史」は場所、「宗教史」はテーマ、「古代史」は時代による分け方です。これらは並列ではなく、「日本の古代の宗教史」のように掛け合わせられます。この年表では、時代を縦軸に、場所とテーマをチェックで重ねて見られるようにしています。</p>
@@ -720,14 +719,14 @@ const EVENTS = [
   [2011,"historiography","2011年","ハラリ『サピエンス全史』","人類史を「虚構を信じる力」から読み解く。","サピエンス全史 文明の構造と人類の幸福"],
 ];
 
-// ---- 古典: ../ancient-texts/texts.json を年表の出来事として足す ----
+// ---- 古典: texts.json を年表の出来事として足す(解説は texts/*.html) ----
 // 解説ページへのリンクを7番目に持たせる(Wikipedia ではなく自サイトへ)
 function addTexts(list){
   for(const t of list){
-    EVENTS.push([t.yearFrom, "texts", t.dateLabel, t.title, t.summary, null, "../ancient-texts/" + t.article]);
+    EVENTS.push([t.yearFrom, "texts", t.dateLabel, t.title, t.summary, null, t.article]);
   }
 }
-fetch("../ancient-texts/texts.json")
+fetch("texts.json")
   .then(r => r.ok ? r.json() : [])
   .then(addTexts)
   .catch(()=>{})
@@ -822,7 +821,7 @@ document.getElementById("texts").onclick = ()=> setCats(["texts"]);
 const filtersEl = document.getElementById("filters"), toBtn = document.getElementById("tofilter");
 toBtn.onclick = ()=> filtersEl.scrollIntoView({behavior:"smooth"});
 addEventListener("scroll", ()=> toBtn.classList.toggle("show", filtersEl.getBoundingClientRect().bottom < 0), {passive:true});
-apply();
+if(location.hash === "#texts"){ setCats(["texts"]); } else { apply(); }
 }
 </script>
 </body>
