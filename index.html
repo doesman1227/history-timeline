@@ -3,8 +3,8 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>宇宙と人類の年表｜まとめノート</title>
-<meta name="description" content="ビッグバンから現代まで、宇宙・地球・各地域・各宗教、そして政治・経済・思想・科学・技術・芸術・医学・環境・心と意識などテーマ別の歴史を一つの年表で。カテゴリごとに表示を切り替えられます。">
+<title>歴史｜まとめノート</title>
+<meta name="description" content="ビッグバンから現代まで、宇宙・地球・各地域・各宗教、そして政治・経済・思想・科学・技術・芸術などテーマ別の歴史と、人類が書き残してきた古典を、一本の年表に重ねて見られる歴史のノート。">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&family=Noto+Serif+JP:wght@600;700&display=swap" rel="stylesheet">
@@ -19,7 +19,7 @@
   --c-buddhism:#d9a0ff; --c-confucian:#b9d86a; --c-shinto:#ff6a5c; --c-otherrel:#c7ae94;
   --c-politics:#7fb2ff; --c-war:#ff7a7a; --c-economy:#f5c542; --c-society:#ff9ecf; --c-gender:#ff7fb8;
   --c-thought:#b39dff; --c-science:#5ee0e0; --c-tech:#9ad06a; --c-media:#6ec6ff; --c-arts:#ffb36b;
-  --c-medicine:#7ff0b0; --c-environment:#6fcf6f; --c-daily:#e0c9a6; --c-mind:#c58cff; --c-historiography:#bfc3cc;
+  --c-medicine:#7ff0b0; --c-environment:#6fcf6f; --c-daily:#e0c9a6; --c-mind:#c58cff; --c-historiography:#bfc3cc; --c-texts:#e8c872;
 }
 *{box-sizing:border-box}
 html{scroll-behavior:smooth}
@@ -84,6 +84,7 @@ li.ev[hidden]{display:none}
 .ev h3 a:hover{color:var(--accent);border-bottom-color:var(--accent)}
 .ev h3 a::after{content:"W";display:inline-block;margin-left:6px;font:600 10px/16px "Noto Serif JP",serif;width:16px;text-align:center;border:1px solid var(--line);border-radius:3px;color:var(--muted);vertical-align:2px}
 .ev h3 a:hover::after{border-color:var(--accent);color:var(--accent)}
+.ev h3 a.own::after{content:"→"}
 .ev p{margin:0;color:var(--muted);font-size:14px}
 footer{color:var(--muted);font-size:12px;padding:24px 0 48px;border-top:1px solid var(--line)}
 footer p{margin:0 0 6px}
@@ -100,10 +101,11 @@ footer .back{margin:8px 0 0}
 <div class="wrap">
   <header>
     <a class="back" href="../">← m-note トップ</a>
-    <p class="mn-eyebrow">HISTORY TIMELINE</p>
-    <h1>宇宙と人類の年表</h1>
-    <p class="mn-tagline">138億年を、一本の年表に。</p>
-    <p class="lead">ビッグバンから現代まで、約138億年を一本の年表に。自然史・地域史・宗教史・テーマ史から、見たいカテゴリにチェックを入れてください。</p>
+    <p class="mn-eyebrow">HISTORY</p>
+    <h1>歴史</h1>
+    <p class="mn-tagline">138億年の出来事と、人類が書き残した言葉を、一本の年表に。</p>
+    <p class="lead">ビッグバンから現代まで、約138億年を一本の年表に。自然史・地域史・宗教史・テーマ史、そして古典（人類が書き残してきた古い文献）から、見たいカテゴリにチェックを入れてください。</p>
+    <p class="lead"><a href="../ancient-texts/">古典の一覧 →</a>　地域・ジャンルで絞り込んで、1冊ずつ読めます。</p>
     <details class="lens">
       <summary>この年表の見方 ― 歴史は「切り口」の掛け合わせ</summary>
       <p>「日本史」は場所、「宗教史」はテーマ、「古代史」は時代による分け方です。これらは並列ではなく、「日本の古代の宗教史」のように掛け合わせられます。この年表では、時代を縦軸に、場所とテーマをチェックで重ねて見られるようにしています。</p>
@@ -130,6 +132,7 @@ footer .back{margin:8px 0 0}
         <button id="regions">地域史のみ</button>
         <button id="religions">宗教史のみ</button>
         <button id="themes">テーマ史のみ</button>
+        <button id="texts">古典のみ</button>
       </div>
       <nav class="eranav" id="eranav"></nav>
       <span class="count" id="count"></span>
@@ -183,6 +186,7 @@ const CATS = [
   {id:"daily",          name:"生活・食・時間",   group:"theme"},
   {id:"mind",           name:"心・脳・意識",     group:"theme"},
   {id:"historiography", name:"歴史学（史学史）", group:"theme"},
+  {id:"texts",          name:"古典",             group:"texts"},
 ];
 
 const ERAS = [
@@ -716,8 +720,22 @@ const EVENTS = [
   [2011,"historiography","2011年","ハラリ『サピエンス全史』","人類史を「虚構を信じる力」から読み解く。","サピエンス全史 文明の構造と人類の幸福"],
 ];
 
+// ---- 古典: ../ancient-texts/texts.json を年表の出来事として足す ----
+// 解説ページへのリンクを7番目に持たせる(Wikipedia ではなく自サイトへ)
+function addTexts(list){
+  for(const t of list){
+    EVENTS.push([t.yearFrom, "texts", t.dateLabel, t.title, t.summary, null, "../ancient-texts/" + t.article]);
+  }
+}
+fetch("../ancient-texts/texts.json")
+  .then(r => r.ok ? r.json() : [])
+  .then(addTexts)
+  .catch(()=>{})
+  .finally(boot);
+
+function boot(){
 // ---- 状態の保存（使えない環境でも動くように） ----
-const KEY = "history-timeline-cats-v3";
+const KEY = "history-timeline-cats-v4";
 function loadState(){
   try{ const v = JSON.parse(localStorage.getItem(KEY)); if(Array.isArray(v)) return new Set(v); }catch(e){}
   return new Set(CATS.map(c=>c.id));
@@ -730,7 +748,7 @@ const eraOf = y => { let e = ERAS[0]; for(const er of ERAS){ if(y >= er.from) e 
 
 // ---- フィルタのチップ ----
 const chipsEl = document.getElementById("chips");
-const GROUPS = {nature:"自然史", region:"地域史", religion:"宗教史", theme:"テーマ史"};
+const GROUPS = {nature:"自然史", region:"地域史", religion:"宗教史", theme:"テーマ史", texts:"古典"};
 const grpEl = {};
 for(const [g,label] of Object.entries(GROUPS)){
   const d = document.createElement("div"); d.className = "grp";
@@ -758,7 +776,7 @@ for(const c of CATS){
 // ---- 年表の描画 ----
 const tl = document.getElementById("timeline");
 const nav = document.getElementById("eranav");
-const sorted = EVENTS.map((e,i)=>({y:e[0],cat:e[1],date:e[2],title:e[3],desc:e[4],wiki:e[5],i}))
+const sorted = EVENTS.map((e,i)=>({y:e[0],cat:e[1],date:e[2],title:e[3],desc:e[4],wiki:e[5],url:e[6],i}))
   .sort((a,b)=> a.y-b.y || a.i-b.i);
 const eraLists = {};
 for(const er of ERAS){
@@ -774,7 +792,7 @@ for(const ev of sorted){
   li.className = "ev"; li.dataset.cat = ev.cat;
   li.style.setProperty("--cat", `var(--c-${ev.cat})`);
   li.innerHTML = `<div class="meta"><span class="date">${ev.date}</span><span class="tag">${catById[ev.cat].name}</span></div>
-    <h3>${ev.wiki?`<a href="https://ja.wikipedia.org/wiki/${encodeURIComponent(ev.wiki.replace(/ /g,"_"))}" target="_blank" rel="noopener" title="Wikipedia：${ev.wiki}">${ev.title}</a>`:ev.title}</h3>${ev.desc?`<p>${ev.desc}</p>`:""}`;
+    <h3>${ev.url?`<a class="own" href="${ev.url}" title="解説を読む">${ev.title}</a>`:ev.wiki?`<a href="https://ja.wikipedia.org/wiki/${encodeURIComponent(ev.wiki.replace(/ /g,"_"))}" target="_blank" rel="noopener" title="Wikipedia：${ev.wiki}">${ev.title}</a>`:ev.title}</h3>${ev.desc?`<p>${ev.desc}</p>`:""}`;
   eraLists[eraOf(ev.y).id].querySelector("ol").appendChild(li);
 }
 
@@ -800,10 +818,12 @@ document.getElementById("nature").onclick  = ()=> setCats(CATS.filter(c=>c.group
 document.getElementById("regions").onclick = ()=> setCats(CATS.filter(c=>c.group==="region").map(c=>c.id));
 document.getElementById("religions").onclick = ()=> setCats(CATS.filter(c=>c.group==="religion").map(c=>c.id));
 document.getElementById("themes").onclick = ()=> setCats(CATS.filter(c=>c.group==="theme").map(c=>c.id));
+document.getElementById("texts").onclick = ()=> setCats(["texts"]);
 const filtersEl = document.getElementById("filters"), toBtn = document.getElementById("tofilter");
 toBtn.onclick = ()=> filtersEl.scrollIntoView({behavior:"smooth"});
 addEventListener("scroll", ()=> toBtn.classList.toggle("show", filtersEl.getBoundingClientRect().bottom < 0), {passive:true});
 apply();
+}
 </script>
 </body>
 </html>
