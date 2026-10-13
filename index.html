@@ -1227,7 +1227,10 @@ document.getElementById("texts").onclick = ()=> setCats(["texts"]);
 const filtersEl = document.getElementById("filters"), toBtn = document.getElementById("tofilter");
 toBtn.onclick = ()=> filtersEl.scrollIntoView({behavior:"smooth"});
 addEventListener("scroll", ()=> toBtn.classList.toggle("show", filtersEl.getBoundingClientRect().bottom < 0), {passive:true});
-if(location.hash === "#texts"){ setCats(["texts"]); } else { apply(); }
+// #texts または #cat=id1,id2 で開いたら、その分類だけを表示する
+const h = decodeURIComponent(location.hash);
+const ids = h === "#texts" ? ["texts"] : h.startsWith("#cat=") ? h.slice(5).split(",").filter(id=>catById[id]) : [];
+if(ids.length){ setCats(ids); } else { apply(); }
 }
 </script>
 </body>
